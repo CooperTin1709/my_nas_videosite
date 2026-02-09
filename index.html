@@ -1,30 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>测试中</title>
-  <style>
-    body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
-         max-width:780px;margin:0 auto;padding:48px 18px;line-height:1.7;background:#fafafa}
-    .card{background:#fff;border:1px solid #eee;border-radius:18px;padding:26px}
-    h1{margin:0 0 10px 0;font-size:28px}
-    .btn{display:inline-block;margin-top:14px;padding:12px 16px;border-radius:12px;
-         text-decoration:none;border:1px solid #111;color:#111}
-    .tip{color:#666;font-size:13px;margin-top:12px}
-    .small{color:#999;font-size:12px;margin-top:6px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私人影音中心</title>
+    <style>
+        /* 全局重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            height: 100vh;
+            /* 使用 Bing 每日壁纸接口 */
+            background: url('https://bing.img.run/1920x1080.php') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        /* 遮罩层，让背景暗一点，突出文字 */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        /* 核心卡片 - 毛玻璃效果 */
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.15); /* 半透明白 */
+            backdrop-filter: blur(20px);            /* 核心：高斯模糊 */
+            -webkit-backdrop-filter: blur(20px);    /* 兼容 Safari */
+            padding: 40px 60px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* 头像/图标区域 */
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin-bottom: 10px; font-weight: 600; letter-spacing: 1px; }
+        p { color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; font-size: 0.95rem; }
+
+        /* 按钮样式 */
+        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+
+        .btn {
+            display: block;
+            padding: 14px 0;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        /* 底部版权 */
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* 入场动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <h1>欢迎来到xxx</h1>
-    <p>这里是xxxx</p>
-    <p>点击</p>
+    <div class="overlay"></div>
+    
+    <div class="card">
+        <div class="logo">🎬</div> <!-- 这里可以用 img 标签换成你的图片 -->
+        <h1>Home Media</h1>
+        <p>私人家庭影音中心</p>
 
-    <a class="btn" href="https://video.20070303.xyz:4443/v">进入影院</a>
+        <div class="btn-group">
+            <!-- 核心跳转链接 -->
+            <a href="/v" class="btn">进入影视库 (Video)</a>
+            <a href="https://20070303.xyz:5666" target="_blank" class="btn">后台管理 (NAS)</a>
+        </div>
 
-    <p class="tip">如果当前网络打不开，请换移动数据或换个 Wi‑Fi 再试（有些网络会拦截非标准端口）。</p>
-    <p class="small">— CooperTin</p>
-  </div>
+        <div class="footer">© 2026 Cooper's Studio</div>
+    </div>
 </body>
 </html>
