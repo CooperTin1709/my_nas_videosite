@@ -1,120 +1,177 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私人影音中心</title>
-    <style>
-        /* 全局重置 */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            height: 100vh;
-            /* 使用 Bing 每日壁纸接口 */
-            background: url('https://bing.img.run/1920x1080.php') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>私人影院入口</title>
+  <style>
+    /* 全局样式 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html { 
+      height: 100%; 
+      overflow: hidden; 
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #000; /* 默认黑色背景 */
+    }
 
-        /* 遮罩层，让背景暗一点，突出文字 */
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 0;
-        }
+    /* 动态粒子画布，作为背景 */
+    #canvas-bg {
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 0;
+    }
 
-        /* 核心卡片 - 毛玻璃效果 */
-        .card {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.15); /* 半透明白 */
-            backdrop-filter: blur(20px);            /* 核心：高斯模糊 */
-            -webkit-backdrop-filter: blur(20px);    /* 兼容 Safari */
-            padding: 40px 60px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 90%;
-            width: 400px;
-            animation: fadeIn 1s ease-out;
-        }
+    /* 中间内容容器 - 绝对居中 */
+    .container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 90%;
+      max-width: 420px;
+    }
 
-        /* 头像/图标区域 */
-        .logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 32px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
+    /* 磨砂玻璃卡片 */
+    .card {
+      background: rgba(255, 255, 255, 0.08); /* 极淡的半透明白 */
+      backdrop-filter: blur(16px);           /* 核心：背景模糊 */
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      padding: 40px 30px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      animation: popIn 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
 
-        h1 { margin-bottom: 10px; font-weight: 600; letter-spacing: 1px; }
-        p { color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; font-size: 0.95rem; }
+    h1 { font-size: 28px; margin-bottom: 12px; font-weight: 700; letter-spacing: 1px; }
+    p { color: rgba(255, 255, 255, 0.7); font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
+    
+    /* 核心跳转按钮 */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 16px 0;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* 渐变色 */
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+    }
 
-        /* 按钮样式 */
-        .btn-group { display: flex; flex-direction: column; gap: 15px; }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
+    }
+    
+    .btn:active { transform: scale(0.98); }
 
-        .btn {
-            display: block;
-            padding: 14px 0;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
+    /* 底部小字 */
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+    }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            background: #fff;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn:active { transform: scale(0.98); }
-
-        /* 底部版权 */
-        .footer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* 入场动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    /* 动画 */
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    
+
+  <!-- 动态背景画布 -->
+  <canvas id="canvas-bg"></canvas>
+
+  <div class="container">
     <div class="card">
-        <div class="logo">🎬</div> <!-- 这里可以用 img 标签换成你的图片 -->
-        <h1>Home Media</h1>
-        <p>私人家庭影音中心</p>
-
-        <div class="btn-group">
-            <!-- 核心跳转链接 -->
-            <a href="/v" class="btn">进入影视库 (Video)</a>
-            <a href="https://20070303.xyz:5666" target="_blank" class="btn">后台管理 (NAS)</a>
-        </div>
-
-        <div class="footer">© 2026 Cooper's Studio</div>
+      <h1>Cooper's Cinema</h1>
+      <p>私人专属影音空间<br>如无法访问，请切换 4G/5G 网络尝试</p>
+      
+      <!-- 这里填你的最终跳转地址 -->
+      <a class="btn" href="https://video.20070303.xyz:4443/v">立即进入影院</a>
+      
+      <div class="footer">— CooperTin —</div>
     </div>
+  </div>
+
+  <script>
+    // 简单的粒子星空背景脚本
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    // 初始化画布大小
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 粒子类
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5; // 水平速度
+        this。vy = (Math.random() - 0.5) * 0.5; // 垂直速度
+        this.size = Math.random() * 2 + 1;
+        this.alpha = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        // 碰到边界反弹
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // 生成 80 个粒子
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+    // 动画循环
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // 绘制粒子和连线
+      particles.forEach((p, index) => {
+        p.update();
+        p.draw();
+        // 连线逻辑：距离近的粒子之间画线
+        for (let j = index + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 150) {
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1500})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 </body>
 </html>
