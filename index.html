@@ -29,7 +29,7 @@
     }
 
     /* ── 星云背景（CSS 静态层） ── */
-    .nebula {
+    。nebula {
       position: fixed;
       inset: 0;
       z-index: 0;
@@ -64,7 +64,7 @@
     }
 
     /* ── 主卡片 ── */
-    .card {
+    。card {
       width: min(480px, 92vw);
       background: rgba(255, 255, 255, 0.048);
       backdrop-filter: blur(22px);
@@ -83,14 +83,14 @@
     }
 
     /* ── 标题 ── */
-    .title-group {
+    。title-group {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
     }
 
-    .title-main {
+    。title-main {
       font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
       font-size: clamp(30px, 7.5vw, 46px);
       font-weight: 700;
@@ -108,7 +108,7 @@
       filter: drop-shadow(0 0 22px rgba(210, 140, 255, 0.50));
     }
 
-    .title-sub {
+    。title-sub {
       font-size: clamp(10px, 2.4vw, 12px);
       letter-spacing: 0.32em;
       text-transform: uppercase;
@@ -116,7 +116,7 @@
     }
 
     /* ── 分隔线 ── */
-    .divider {
+    。divider {
       width: 56px;
       height: 1px;
       background: linear-gradient(90deg,
@@ -127,14 +127,14 @@
     }
 
     /* ── 按钮组 ── */
-    .btns {
+    。btns {
       display: flex;
       flex-direction: column;
       gap: 14px;
       width: 100%;
     }
 
-    .btn {
+    。btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -167,7 +167,7 @@
     }
 
     /* 影视按钮：白 → 浅粉 → 玫瑰金 */
-    .btn-cinema {
+    。btn-cinema {
       background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.96) 0%,
         rgba(255, 214, 230, 0.93) 55%,
@@ -200,7 +200,7 @@
     }
 
     @media (hover: hover) {
-      .btn-nas:hover {
+      。btn-nas:hover {
         background: linear-gradient(135deg,
           rgba(255, 255, 255, 0.14) 0%,
           rgba(255, 228, 170, 0.17) 100%
@@ -211,7 +211,7 @@
     }
 
     /* ── 页脚 ── */
-    .footer-text {
+    。footer-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.18);
       letter-spacing: 0.16em;
@@ -220,7 +220,7 @@
     /* ══════════════════════════════════════ */
     /*  MODAL                                 */
     /* ══════════════════════════════════════ */
-    .modal-overlay {
+    。modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 200;
@@ -301,7 +301,7 @@
       50%       { transform: translateY(-6px); }
     }
 
-    .modal-title {
+    。modal-title {
       font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
       font-size: clamp(15px, 3.8vw, 19px);
       letter-spacing: 0.05em;
@@ -312,7 +312,7 @@
       background-clip: text;
     }
 
-    .modal-body {
+    。modal-body {
       font-size: clamp(13px, 3.2vw, 14.5px);
       color: rgba(255, 255, 255, 0.62);
       line-height: 1.90;
@@ -340,7 +340,7 @@
       box-shadow: 0 4px 18px rgba(255, 150, 175, 0.30);
     }
 
-    .modal-action:hover {
+    。modal-action:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 26px rgba(255, 150, 175, 0.48);
     }
@@ -392,7 +392,6 @@
   <div class="card">
     <div class="title-group">
       <h1 class="title-main">yTdd宇宙</h1>
-      <p class="title-sub">Our Private Universe</p>
     </div>
 
     <div class="divider"></div>
@@ -493,7 +492,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     const angle = rnd(0.38, 0.75);
     const spd   = rnd(9, 20);
     const len   = rnd(90, 200);
-    shooters.push({
+    shooters。push({
       x: sx, y: sy,
       vx: -Math.cos(angle) * spd,
       vy:  Math.sin(angle) * spd,
@@ -538,7 +537,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
       nextShot  = rnd(2800, 7500);
     }
 
-    shooters.forEach(s => {
+    shooters。forEach(s => {
       if (s.dead) return;
 
       s.trail.unshift({ x: s.x, y: s.y });
@@ -556,7 +555,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
         grd.addColorStop(1, `rgba(255,220,255,0)`);
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
-        s.trail.forEach(p => ctx.lineTo(p.x, p.y));
+        s。trail.forEach(p => ctx.lineTo(p.x, p.y));
         ctx.strokeStyle = grd;
         ctx.lineWidth   = 1.6;
         ctx.stroke();
@@ -586,3 +585,4 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 </script>
 </body>
 </html>
+
