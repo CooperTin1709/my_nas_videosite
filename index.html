@@ -3,102 +3,134 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0e1a" />
-  <title>Cooper's Space</title>
+  <meta name="theme-color" content="#030714" />
+  <title>yTdd宇宙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       width: 100%;
-      height: 100%;
-      background: #0a0e1a;
-      color: #fff;
-      font-family: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
-                   "Microsoft YaHei", sans-serif;
-      /* 允许在内容超出时滚动，防止手机上卡死 */
       overflow-x: hidden;
-      overflow-y: auto;
     }
 
-    canvas {
+    body {
+      min-height: 100dvh;
+      background: #030714;
+      color: #fff;
+      font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+    }
+
+    /* ── 星云背景（CSS 静态层） ── */
+    .nebula {
       position: fixed;
       inset: 0;
       z-index: 0;
-      display: block;
+      background:
+        radial-gradient(ellipse 90% 60% at 10% 15%,  rgba(80, 20, 140, 0.38) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 55% at 88% 75%,  rgba(20, 50, 130, 0.30) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 55% 45%,  rgba(120, 20, 80,  0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 30% 30% at 30% 80%,  rgba(40, 80, 160,  0.18) 0%, transparent 55%),
+        #030714;
     }
 
-    /* ── 整体布局 ── */
-    。page {
-      position: relative;
+    /* ── Canvas 星空 ── */
+    canvas {
+      position: fixed;
+      inset: 0;
       z-index: 1;
-      min-height: 100dvh; /* dvh 支持手机浏览器地址栏缩放 */
+    }
+
+    /* ── 页面主层 ── */
+    .page {
+      position: relative;
+      z-index: 2;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px;
-      /* 安全区域（刘海屏/Home 条）*/
-      padding-top: max(24px, env(safe-area-inset-top));
-      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      padding:
+        max(32px, env(safe-area-inset-top,  32px))
+        20px
+        max(32px, env(safe-area-inset-bottom, 32px));
     }
 
-    /* ── 卡片 ── */
+    /* ── 主卡片 ── */
     .card {
-      width: 100%;
-      max-width: 400px;
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 24px;
-      padding: clamp(28px, 6vw, 48px) clamp(24px, 6vw, 48px);
+      width: min(480px, 92vw);
+      background: rgba(255, 255, 255, 0.048);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 28px;
+      padding: clamp(28px, 6vw, 52px) clamp(24px, 6vw, 52px);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: clamp(20px, 4vw, 32px);
-      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.45);
-    }
-
-    /* ── 文字区域 ── */
-    .label {
-      font-size: clamp(10px, 2.5vw, 12px);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    .title {
+      gap: clamp(20px, 4vw, 30px);
+      box-shadow:
+        0 0 80px rgba(120, 50, 220, 0.14),
+        0 24px 80px rgba(0, 0, 0, 0.55);
       text-align: center;
-      line-height: 1.4;
+    }
+
+    /* ── 标题 ── */
+    .title-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
 
     .title-main {
-      display: block;
-      font-size: clamp(22px, 5.5vw, 30px);
-      font-weight: 300;
-      letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.92);
+      font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+      font-size: clamp(30px, 7.5vw, 46px);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      background: linear-gradient(135deg,
+        #ffffff   0%,
+        #f5d6ff  35%,
+        #ffd9b5  70%,
+        #ffb8c8 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 22px rgba(210, 140, 255, 0.50));
     }
 
-    。title-sub {
-      display: block;
-      font-size: clamp(11px, 2.8vw, 13px);
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      color: rgba(255, 255, 255, 0.35);
-      margin-top: 8px;
+    .title-sub {
+      font-size: clamp(10px, 2.4vw, 12px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.30);
+    }
+
+    /* ── 分隔线 ── */
+    .divider {
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(210, 155, 255, 0.55),
+        transparent
+      );
     }
 
     /* ── 按钮组 ── */
-    。btn-group {
+    .btns {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       width: 100%;
     }
 
@@ -107,253 +139,450 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      width: 100%;
-      /* 手机上最小点击高度 44px，舒适 52px */
-      min-height: 52px;
-      padding: 14px 20px;
-      border-radius: 14px;
+      min-height: 54px;
+      padding: 14px 22px;
+      border-radius: 16px;
       text-decoration: none;
-      font-size: clamp(14px, 3.5vw, 15px);
-      font-weight: 500;
-      letter-spacing: 0.04em;
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(14px, 3.6vw, 15px);
+      font-weight: 600;
+      letter-spacing: 0.07em;
       border: none;
       cursor: pointer;
-      /* 移动端点击态 */
-      transition: transform 0.16s ease, box-shadow 0.16s ease,
-                  background 0.16s ease, opacity 0.16s ease;
-      -webkit-user-select: none;
       user-select: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
     }
 
-    .btn:active {
-      transform: scale(0.97);
-      opacity: 0.88;
-    }
+    .btn:active { transform: scale(0.97); }
 
     @media (hover: hover) {
-      .btn:hover { transform: translateY(-2px); }
+      .btn:hover { transform: translateY(-3px); }
       .btn:active { transform: scale(0.97); }
     }
 
     .btn svg {
-      width: 18px;
-      height: 18px;
+      width: 17px;
+      height: 17px;
       flex-shrink: 0;
     }
 
-    /* 主按钮 */
-    。btn-primary {
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    /* 影视按钮：白 → 浅粉 → 玫瑰金 */
+    .btn-cinema {
+      background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.96) 0%,
+        rgba(255, 214, 230, 0.93) 55%,
+        rgba(255, 182, 193, 0.92) 100%
+      );
+      color: #5c1030;
+      box-shadow:
+        0 5px 22px rgba(255, 150, 175, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
     }
 
     @media (hover: hover) {
-      .btn-primary:hover {
-        background: linear-gradient(135deg, #7577f3, #9b6ef8);
-        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+      .btn-cinema:hover {
+        box-shadow:
+          0 10px 32px rgba(255, 150, 175, 0.50),
+          inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        filter: brightness(1.03);
       }
     }
 
-    /* 副按钮 */
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.07);
-      color: rgba(255, 255, 255, 0.82);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* NAS 按钮：玻璃 + 浅金边 */
+    .btn-nas {
+      background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.09) 0%,
+        rgba(255, 228, 170, 0.10) 100%
+      );
+      color: rgba(255, 238, 200, 0.90);
+      border: 1px solid rgba(255, 210, 140, 0.30);
+      box-shadow: 0 3px 14px rgba(255, 200, 80, 0.08);
     }
 
     @media (hover: hover) {
-      .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.13);
-        border-color: rgba(255, 255, 255, 0.28);
+      .btn-nas:hover {
+        background: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.14) 0%,
+          rgba(255, 228, 170, 0.17) 100%
+        );
+        border-color: rgba(255, 210, 140, 0.55);
+        box-shadow: 0 8px 28px rgba(255, 200, 80, 0.18);
       }
-    }
-
-    /* ── 提示文字 ── */
-    .tip {
-      font-size: clamp(11px, 2.8vw, 12px);
-      color: rgba(255, 255, 255, 0.22);
-      text-align: center;
-      line-height: 1.75;
     }
 
     /* ── 页脚 ── */
-    .footer {
-      margin-top: clamp(16px, 3vw, 24px);
+    .footer-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.18);
-      letter-spacing: 0.12em;
+      letter-spacing: 0.16em;
     }
 
-    /* ── 平板 / 桌面微调 ── */
-    @media (min-width: 600px) {
-      .card { border-radius: 28px; }
-      .btn-group { flex-direction: column; }
+    /* ══════════════════════════════════════ */
+    /*  MODAL                                 */
+    /* ══════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(3, 7, 22, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(20px, env(safe-area-inset-top, 20px)) 20px max(20px, env(safe-area-inset-bottom, 20px));
+      animation: overlayIn 0.4s ease forwards;
+    }
+
+    .modal-overlay.closing {
+      animation: overlayOut 0.35s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes overlayIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes overlayOut { from { opacity: 1; } to { opacity: 0; } }
+
+    .modal {
+      position: relative;
+      width: min(400px, 92vw);
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(100, 30, 180, 0.25) 0%, transparent 60%),
+        rgba(12, 6, 36, 0.88);
+      border: 1px solid rgba(200, 150, 255, 0.22);
+      border-radius: 26px;
+      padding: clamp(32px, 7vw, 48px) clamp(24px, 6vw, 40px) clamp(28px, 6vw, 40px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      box-shadow:
+        0 0 70px rgba(140, 60, 255, 0.18),
+        0 24px 80px rgba(0, 0, 0, 0.65);
+      text-align: center;
+      animation: modalIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalIn {
+      from { transform: translateY(28px) scale(0.93); opacity: 0; }
+      to   { transform: translateY(0)    scale(1);    opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 13px;
+      right: 13px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      color: rgba(255, 255, 255, 0.50);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    .modal-deco {
+      font-size: clamp(38px, 9vw, 52px);
+      animation: floatDeco 3s ease-in-out infinite;
+      line-height: 1;
+    }
+
+    @keyframes floatDeco {
+      0%, 100% { transform: translateY(0);    }
+      50%       { transform: translateY(-6px); }
+    }
+
+    .modal-title {
+      font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+      font-size: clamp(15px, 3.8vw, 19px);
+      letter-spacing: 0.05em;
+      line-height: 1.45;
+      background: linear-gradient(135deg, #fff 0%, #f0d5ff 50%, #ffd9b0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-body {
+      font-size: clamp(13px, 3.2vw, 14.5px);
+      color: rgba(255, 255, 255, 0.62);
+      line-height: 1.90;
+      max-width: 300px;
+    }
+
+    .modal-body .pink  { color: rgba(255, 190, 210, 0.90); }
+    .modal-body .gold  { color: rgba(255, 220, 150, 0.85); }
+
+    .modal-action {
+      margin-top: 8px;
+      padding: 12px 40px;
+      border-radius: 50px;
+      background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95),
+        rgba(255, 205, 225, 0.92)
+      );
+      color: #5c1030;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 18px rgba(255, 150, 175, 0.30);
+    }
+
+    .modal-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(255, 150, 175, 0.48);
+    }
+
+    .modal-action:active { transform: scale(0.97); }
+
+    /* ── 小星星点缀 ── */
+    .stars-row {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      opacity: 0.5;
+      letter-spacing: 4px;
     }
   </style>
 </head>
 <body>
 
+<div class="nebula"></div>
 <canvas id="canvas"></canvas>
 
-<div class="page">
-  <div class="card">
-    <span class="label">Cooper's Space</span>
+<!-- ════ 弹窗 ════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="closeBtn" aria-label="关闭">✕</button>
 
-    <div class="title">
-      <span class="title-main">私人影院</span>
-      <span class="title-sub">PRIVATE MEDIA SERVER</span>
+    <div class="modal-deco">💌</div>
+
+    <div class="stars-row">✦ ✦ ✦</div>
+
+    <div class="modal-title">来自宇宙的一封信</div>
+
+    <div class="modal-body">
+      <span class="pink">亲爱的 L，</span><br><br>
+      <!-- ✏️ 在这里替换成你的生日祝福内容 -->
+      这里是属于我们的小宇宙 🌌<br>
+      <span class="gold">生日快乐 🎂</span><br><br>
+      <span class="pink">—— 你的 Cooper ♡</span>
     </div>
 
-    <div class="btn-group">
+    <div class="stars-row">✦ ✦ ✦</div>
 
+    <button class="modal-action" id="modalOkBtn">进入宇宙 ✨</button>
+  </div>
+</div>
+
+<!-- ════ 主页面 ════ -->
+<div class="page">
+  <div class="card">
+    <div class="title-group">
+      <h1 class="title-main">yTdd宇宙</h1>
+      <p class="title-sub">Our Private Universe</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="btns">
       <!-- 飞牛影视 -->
-      <a class="btn btn-primary"
+      <a class="btn btn-cinema"
          href="https://video.20070303.xyz:4443/v"
-         target="_blank"
-         rel="noopener noreferrer">
+         target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
-        进入影院
+        进入影视
       </a>
 
       <!-- NAS 主页 -->
-      <a class="btn btn-secondary"
+      <a class="btn btn-nas"
          href="https://nas.20070303.xyz:14443"
-         target="_blank"
-         rel="noopener noreferrer">
+         target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="3" width="20" height="14" rx="2"/>
           <path d="M8 21h8M12 17v4"/>
         </svg>
-        NAS 管理主页
+        NAS 主页
       </a>
-
     </div>
 
-    <p class="tip">
-      无法访问？请切换至移动数据再试<br>
-      （部分 Wi-Fi 会拦截非标准端口）
-    </p>
+    <p class="footer-text">— CooperTin</p>
   </div>
-
-  <p class="footer">— CooperTin</p>
 </div>
 
 <script>
-  (function () {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const COUNT = 80;
-    const LINK = 120;
-    let W, H, pts = [];
-    const mouse = { x: -9999, y: -9999 };
+/* ══════════════════════════════════════════
+   MODAL LOGIC
+══════════════════════════════════════════ */
+function closeModal() {
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('closing');
+  overlay.addEventListener('animationend', () => overlay.remove(), { once: true });
+}
+document.getElementById('closeBtn').addEventListener('click', closeModal);
+document.getElementById('modalOkBtn').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
 
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+/* ══════════════════════════════════════════
+   STAR CANVAS
+══════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById('canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
 
-    function init() {
-      pts = Array.from({ length: COUNT }, () => ({
+  /* ---------- star data ---------- */
+  let stars = [];
+  const STAR_COLORS = [
+    [255, 255, 255],
+    [210, 225, 255],
+    [255, 242, 210],
+    [255, 210, 225],
+    [225, 205, 255],
+  ];
+
+  function initStars() {
+    stars = [];
+    const n = Math.min(Math.floor(W * H / 3800), 420);
+    for (let i = 0; i < n; i++) {
+      const c = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+      const base = Math.random() * 0.65 + 0.30;
+      stars.push({
         x: Math.random() * W,
         y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        r: Math.random() * 1.4 + 0.8,
-        a: Math.random() * 0.5 + 0.4
-      }));
+        r: Math.random() * 1.8 + 0.25,
+        base,
+        alpha: base,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.018 + 0.004,
+        color: c,
+        glow: Math.random() < 0.08,
+      });
     }
+  }
 
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
+  /* ---------- shooting stars ---------- */
+  let shooters = [];
+  let nextShot  = rnd(2800, 7000);
+  let lastShot  = 0;
 
-      /* 粒子间连线 */
-      for (let i = 0; i < COUNT - 1; i++) {
-        for (let j = i + 1; j < COUNT; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const d = Math.hypot(dx, dy);
-          if (d < LINK) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(148,130,255,${0.16 * (1 - d / LINK)})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.stroke();
-          }
-        }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  function spawnShooter() {
+    const fromTop = Math.random() > 0.35;
+    const sx = fromTop ? Math.random() * W * 1.2 : W + 60;
+    const sy = fromTop ? -60 : rnd(-60, H * 0.45);
+    const angle = rnd(0.38, 0.75);
+    const spd   = rnd(9, 20);
+    const len   = rnd(90, 200);
+    shooters.push({
+      x: sx, y: sy,
+      vx: -Math.cos(angle) * spd,
+      vy:  Math.sin(angle) * spd,
+      alpha: 1,
+      trail: [],
+      maxTrail: Math.ceil(len / 5),
+      dead: false,
+    });
+  }
+
+  /* ---------- draw ---------- */
+  function drawFrame(ts) {
+    ctx.clearRect(0, 0, W, H);
+
+    /* stars */
+    stars.forEach(s => {
+      s.phase += s.speed;
+      const tw = (Math.sin(s.phase) + 1) * 0.5;
+      const a  = s.base * (0.45 + 0.55 * tw);
+      const [r, g, b] = s.color;
+
+      if (s.glow && s.r > 1.0) {
+        const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+        gr.addColorStop(0, `rgba(${r},${g},${b},${a * 0.45})`);
+        gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = gr;
+        ctx.fill();
       }
 
-      /* 鼠标 / 触摸连线 */
-      pts.forEach(p => {
-        const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-        if (d < 150) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(180,160,255,${0.3 * (1 - d / 150)})`;
-          ctx.lineWidth = 0.7;
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
-      });
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      ctx.fill();
+    });
 
-      /* 粒子本体 */
-      pts.forEach(p => {
+    /* shooting stars */
+    if (ts - lastShot > nextShot) {
+      spawnShooter();
+      lastShot  = ts;
+      nextShot  = rnd(2800, 7500);
+    }
+
+    shooters.forEach(s => {
+      if (s.dead) return;
+
+      s.trail.unshift({ x: s.x, y: s.y });
+      if (s.trail.length > s.maxTrail) s.trail.pop();
+      s.x += s.vx;
+      s.y += s.vy;
+      s.alpha -= 0.015;
+
+      if (s.alpha <= 0 || s.x < -150 || s.y > H + 60) { s.dead = true; return; }
+
+      if (s.trail.length > 1) {
+        const tail = s.trail[s.trail.length - 1];
+        const grd = ctx.createLinearGradient(s.x, s.y, tail.x, tail.y);
+        grd.addColorStop(0, `rgba(255,248,255,${s.alpha})`);
+        grd.addColorStop(1, `rgba(255,220,255,0)`);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(210,205,255,${p.a})`;
-        ctx.fill();
-      });
-    }
+        ctx.moveTo(s.x, s.y);
+        s.trail.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.strokeStyle = grd;
+        ctx.lineWidth   = 1.6;
+        ctx.stroke();
+      }
 
-    function update() {
-      pts.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-      });
-    }
-
-    function loop() {
-      update();
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    /* 事件：鼠标 */
-    window.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-    window.addEventListener('mouseleave', () => {
-      mouse.x = -9999; mouse.y = -9999;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+      ctx.fill();
     });
 
-    /* 事件：触摸（手机支持） */
-    window.addEventListener('touchmove', e => {
-      mouse。x = e.touches[0].clientX;
-      mouse.y = e.touches[0].clientY;
-    }, { passive: true });
-    window.addEventListener('touchend', () => {
-      mouse.x = -9999; mouse.y = -9999;
-    });
+    shooters = shooters.filter(s => !s.dead);
+    requestAnimationFrame(drawFrame);
+  }
 
-    /* 窗口大小变化 */
-    window.addEventListener('resize', () => { resize(); init(); });
+  /* ---------- init ---------- */
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-    resize();
-    init();
-    loop();
-  })();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  resize();
+  initStars();
+  requestAnimationFrame(drawFrame);
+})();
 </script>
-
 </body>
 </html>
-
-
