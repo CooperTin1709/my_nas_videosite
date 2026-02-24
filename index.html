@@ -7,7 +7,7 @@
   <title>yTdd宇宙</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -28,8 +28,7 @@
       font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
     }
 
-    /* ── 星云背景（CSS 静态层） ── */
-    。nebula {
+    .nebula {
       position: fixed;
       inset: 0;
       z-index: 0;
@@ -41,14 +40,12 @@
         #030714;
     }
 
-    /* ── Canvas 星空 ── */
     canvas {
       position: fixed;
       inset: 0;
       z-index: 1;
     }
 
-    /* ── 页面主层 ── */
     .page {
       position: relative;
       z-index: 2;
@@ -63,8 +60,7 @@
         max(32px, env(safe-area-inset-bottom, 32px));
     }
 
-    /* ── 主卡片 ── */
-    。card {
+    .card {
       width: min(480px, 92vw);
       background: rgba(255, 255, 255, 0.048);
       backdrop-filter: blur(22px);
@@ -82,16 +78,15 @@
       text-align: center;
     }
 
-    /* ── 标题 ── */
-    。title-group {
+    .title-group {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
     }
 
-    。title-main {
-      font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+    .title-main {
+      font-family: 'Raleway', 'Noto Serif SC', 'PingFang SC', sans-serif;
       font-size: clamp(30px, 7.5vw, 46px);
       font-weight: 700;
       letter-spacing: 0.04em;
@@ -108,15 +103,7 @@
       filter: drop-shadow(0 0 22px rgba(210, 140, 255, 0.50));
     }
 
-    。title-sub {
-      font-size: clamp(10px, 2.4vw, 12px);
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.30);
-    }
-
-    /* ── 分隔线 ── */
-    。divider {
+    .divider {
       width: 56px;
       height: 1px;
       background: linear-gradient(90deg,
@@ -126,15 +113,14 @@
       );
     }
 
-    /* ── 按钮组 ── */
-    。btns {
+    .btns {
       display: flex;
       flex-direction: column;
       gap: 14px;
       width: 100%;
     }
 
-    。btn {
+    .btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -166,8 +152,7 @@
       flex-shrink: 0;
     }
 
-    /* 影视按钮：白 → 浅粉 → 玫瑰金 */
-    。btn-cinema {
+    .btn-cinema {
       background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.96) 0%,
         rgba(255, 214, 230, 0.93) 55%,
@@ -188,7 +173,6 @@
       }
     }
 
-    /* NAS 按钮：玻璃 + 浅金边 */
     .btn-nas {
       background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.09) 0%,
@@ -200,7 +184,7 @@
     }
 
     @media (hover: hover) {
-      。btn-nas:hover {
+      .btn-nas:hover {
         background: linear-gradient(135deg,
           rgba(255, 255, 255, 0.14) 0%,
           rgba(255, 228, 170, 0.17) 100%
@@ -210,17 +194,14 @@
       }
     }
 
-    /* ── 页脚 ── */
-    。footer-text {
+    .footer-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.18);
       letter-spacing: 0.16em;
     }
 
-    /* ══════════════════════════════════════ */
-    /*  MODAL                                 */
-    /* ══════════════════════════════════════ */
-    。modal-overlay {
+    /* ══ MODAL ══ */
+    .modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 200;
@@ -301,8 +282,8 @@
       50%       { transform: translateY(-6px); }
     }
 
-    。modal-title {
-      font-family: 'Cinzel Decorative', 'Noto Serif SC', serif;
+    .modal-title {
+      font-family: 'Raleway', 'Noto Serif SC', serif;
       font-size: clamp(15px, 3.8vw, 19px);
       letter-spacing: 0.05em;
       line-height: 1.45;
@@ -312,7 +293,7 @@
       background-clip: text;
     }
 
-    。modal-body {
+    .modal-body {
       font-size: clamp(13px, 3.2vw, 14.5px);
       color: rgba(255, 255, 255, 0.62);
       line-height: 1.90;
@@ -340,14 +321,13 @@
       box-shadow: 0 4px 18px rgba(255, 150, 175, 0.30);
     }
 
-    。modal-action:hover {
+    .modal-action:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 26px rgba(255, 150, 175, 0.48);
     }
 
     .modal-action:active { transform: scale(0.97); }
 
-    /* ── 小星星点缀 ── */
     .stars-row {
       display: flex;
       gap: 10px;
@@ -421,14 +401,12 @@
       </a>
     </div>
 
-    <p class="footer-text">— CooperTin</p>
+    <p class="footer-text">— Made By CooperTin</p>
   </div>
 </div>
 
 <script>
-/* ══════════════════════════════════════════
-   MODAL LOGIC
-══════════════════════════════════════════ */
+/* ══ MODAL ══ */
 function closeModal() {
   const overlay = document.getElementById('modalOverlay');
   overlay.classList.add('closing');
@@ -440,15 +418,12 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
   if (e.target === e.currentTarget) closeModal();
 });
 
-/* ══════════════════════════════════════════
-   STAR CANVAS
-══════════════════════════════════════════ */
+/* ══ STAR CANVAS ══ */
 (function () {
   const canvas = document.getElementById('canvas');
   const ctx    = canvas.getContext('2d');
   let W, H;
 
-  /* ---------- star data ---------- */
   let stars = [];
   const STAR_COLORS = [
     [255, 255, 255],
@@ -462,14 +437,13 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     stars = [];
     const n = Math.min(Math.floor(W * H / 3800), 420);
     for (let i = 0; i < n; i++) {
-      const c = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+      const c    = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
       const base = Math.random() * 0.65 + 0.30;
       stars.push({
         x: Math.random() * W,
         y: Math.random() * H,
         r: Math.random() * 1.8 + 0.25,
         base,
-        alpha: base,
         phase: Math.random() * Math.PI * 2,
         speed: Math.random() * 0.018 + 0.004,
         color: c,
@@ -478,10 +452,9 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     }
   }
 
-  /* ---------- shooting stars ---------- */
   let shooters = [];
-  let nextShot  = rnd(2800, 7000);
-  let lastShot  = 0;
+  let nextShot = rnd(2800, 7000);
+  let lastShot = 0;
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
@@ -492,7 +465,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     const angle = rnd(0.38, 0.75);
     const spd   = rnd(9, 20);
     const len   = rnd(90, 200);
-    shooters。push({
+    shooters.push({
       x: sx, y: sy,
       vx: -Math.cos(angle) * spd,
       vy:  Math.sin(angle) * spd,
@@ -503,15 +476,13 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     });
   }
 
-  /* ---------- draw ---------- */
   function drawFrame(ts) {
     ctx.clearRect(0, 0, W, H);
 
-    /* stars */
     stars.forEach(s => {
       s.phase += s.speed;
-      const tw = (Math.sin(s.phase) + 1) * 0.5;
-      const a  = s.base * (0.45 + 0.55 * tw);
+      const tw   = (Math.sin(s.phase) + 1) * 0.5;
+      const a    = s.base * (0.45 + 0.55 * tw);
       const [r, g, b] = s.color;
 
       if (s.glow && s.r > 1.0) {
@@ -530,32 +501,29 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
       ctx.fill();
     });
 
-    /* shooting stars */
     if (ts - lastShot > nextShot) {
       spawnShooter();
-      lastShot  = ts;
-      nextShot  = rnd(2800, 7500);
+      lastShot = ts;
+      nextShot = rnd(2800, 7500);
     }
 
-    shooters。forEach(s => {
+    shooters.forEach(s => {
       if (s.dead) return;
-
       s.trail.unshift({ x: s.x, y: s.y });
       if (s.trail.length > s.maxTrail) s.trail.pop();
       s.x += s.vx;
       s.y += s.vy;
       s.alpha -= 0.015;
-
       if (s.alpha <= 0 || s.x < -150 || s.y > H + 60) { s.dead = true; return; }
 
       if (s.trail.length > 1) {
         const tail = s.trail[s.trail.length - 1];
-        const grd = ctx.createLinearGradient(s.x, s.y, tail.x, tail.y);
+        const grd  = ctx.createLinearGradient(s.x, s.y, tail.x, tail.y);
         grd.addColorStop(0, `rgba(255,248,255,${s.alpha})`);
         grd.addColorStop(1, `rgba(255,220,255,0)`);
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
-        s。trail.forEach(p => ctx.lineTo(p.x, p.y));
+        s.trail.forEach(p => ctx.lineTo(p.x, p.y));
         ctx.strokeStyle = grd;
         ctx.lineWidth   = 1.6;
         ctx.stroke();
@@ -571,7 +539,6 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
     requestAnimationFrame(drawFrame);
   }
 
-  /* ---------- init ---------- */
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
@@ -585,4 +552,3 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 </script>
 </body>
 </html>
-
