@@ -2,82 +2,103 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
   <title>Cooper's Space</title>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    body, html {
+    html, body {
+      width: 100%;
       height: 100%;
-      overflow: hidden;
-      font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: #0a0e1a;
       color: #fff;
+      font-family: system-ui, -apple-system, "PingFang SC", "Hiragino Sans GB",
+                   "Microsoft YaHei", sans-serif;
+      /* 允许在内容超出时滚动，防止手机上卡死 */
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
+      display: block;
     }
 
-    。container {
+    /* ── 整体布局 ── */
+    .page {
       position: relative;
       z-index: 1;
+      min-height: 100dvh; /* dvh 支持手机浏览器地址栏缩放 */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      gap: 0;
+      padding: 24px 16px;
+      /* 安全区域（刘海屏/Home 条）*/
+      padding-top: max(24px, env(safe-area-inset-top));
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
     }
 
-    。card {
-      background: rgba(255, 255, 255, 0.06);
+    /* ── 卡片 ── */
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 24px;
-      padding: 48px 56px 44px;
+      padding: clamp(28px, 6vw, 48px) clamp(24px, 6vw, 48px);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 32px;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.4);
-      max-width: 420px;
-      width: 90vw;
+      gap: clamp(20px, 4vw, 32px);
+      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.45);
     }
 
-    .logo {
-      font-size: 13px;
+    /* ── 文字区域 ── */
+    .label {
+      font-size: clamp(10px, 2.5vw, 12px);
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: -8px;
+      color: rgba(255, 255, 255, 0.3);
     }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 300;
-      letter-spacing: 0.08em;
+    .title {
       text-align: center;
-      color: rgba(255,255,255,0.92);
       line-height: 1.4;
     }
 
-    h1 span {
+    .title-main {
       display: block;
-      font-size: 14px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.38);
-      letter-spacing: 0.15em;
-      margin-top: 6px;
+      font-size: clamp(22px, 5.5vw, 30px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.92);
     }
 
+    .title-sub {
+      display: block;
+      font-size: clamp(11px, 2.8vw, 13px);
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 8px;
+    }
+
+    /* ── 按钮组 ── */
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       width: 100%;
     }
 
@@ -87,71 +108,88 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 15px 24px;
+      /* 手机上最小点击高度 44px，舒适 52px */
+      min-height: 52px;
+      padding: 14px 20px;
       border-radius: 14px;
       text-decoration: none;
-      font-size: 15px;
+      font-size: clamp(14px, 3.5vw, 15px);
       font-weight: 500;
       letter-spacing: 0.04em;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      border: none;
       cursor: pointer;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
+      /* 移动端点击态 */
+      transition: transform 0.16s ease, box-shadow 0.16s ease,
+                  background 0.16s ease, opacity 0.16s ease;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .btn:active {
-      transform: translateY(0);
+      transform: scale(0.97);
+      opacity: 0.88;
     }
 
-    /* 主按钮：影视 */
-    。btn-primary {
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      color: #fff;
-      box-shadow: 0 4px 24px rgba(99, 102, 241, 0.45);
-    }
-
-    。btn-primary:hover {
-      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.65);
-      background: linear-gradient(135deg, #7577f3 0%, #9b6ef8 100%);
-    }
-
-    /* 副按钮：NAS主页 */
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.07);
-      color: rgba(255,255,255,0.82);
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.13);
-      border-color: rgba(255,255,255,0.3);
-      box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    @media (hover: hover) {
+      .btn:hover { transform: translateY(-2px); }
+      .btn:active { transform: scale(0.97); }
     }
 
     .btn svg {
       width: 18px;
       height: 18px;
       flex-shrink: 0;
-      opacity: 0.9;
     }
 
+    /* 主按钮 */
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    @media (hover: hover) {
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #7577f3, #9b6ef8);
+        box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+      }
+    }
+
+    /* 副按钮 */
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (hover: hover) {
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.13);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    /* ── 提示文字 ── */
     .tip {
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
+      font-size: clamp(11px, 2.8vw, 12px);
+      color: rgba(255, 255, 255, 0.22);
       text-align: center;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
+    /* ── 页脚 ── */
     .footer {
-      position: fixed;
-      bottom: 24px;
+      margin-top: clamp(16px, 3vw, 24px);
       font-size: 12px;
-      color: rgba(255,255,255,0.18);
-      letter-spacing: 0.1em;
-      z-index: 1;
+      color: rgba(255, 255, 255, 0.18);
+      letter-spacing: 0.12em;
+    }
+
+    /* ── 平板 / 桌面微调 ── */
+    @media (min-width: 600px) {
+      .card { border-radius: 28px; }
+      .btn-group { flex-direction: column; }
     }
   </style>
 </head>
@@ -159,132 +197,161 @@
 
 <canvas id="canvas"></canvas>
 
-<div class="container">
+<div class="page">
   <div class="card">
-    <p class="logo">Cooper's Space</p>
-    <h1>
-      私人影院
-      <span>PRIVATE MEDIA SERVER</span>
-    </h1>
+    <span class="label">Cooper's Space</span>
+
+    <div class="title">
+      <span class="title-main">私人影院</span>
+      <span class="title-sub">PRIVATE MEDIA SERVER</span>
+    </div>
 
     <div class="btn-group">
-      <!-- 按钮一：飞牛影视 -->
-      <a class="btn btn-primary" href="https://video.20070303.xyz:4443/v" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
+      <!-- 飞牛影视 -->
+      <a class="btn btn-primary"
+         href="https://video.20070303.xyz:4443/v"
+         target="_blank"
+         rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
         进入影院
       </a>
 
-      <!-- 按钮二：NAS 主页 -->
-      <a class="btn btn-secondary" href="https://video.20070303.xyz:4444" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <!-- NAS 主页 -->
+      <a class="btn btn-secondary"
+         href="https://video.20070303.xyz:4444"
+         target="_blank"
+         rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="3" width="20" height="14" rx="2"/>
           <path d="M8 21h8M12 17v4"/>
         </svg>
         NAS 管理主页
       </a>
+
     </div>
 
-    <p class="tip">如网络无法访问，请切换至移动数据<br>（部分 Wi-Fi 会拦截非标准端口）</p>
+    <p class="tip">
+      无法访问？请切换至移动数据再试<br>
+      （部分 Wi-Fi 会拦截非标准端口）
+    </p>
   </div>
+
+  <p class="footer">— CooperTin</p>
 </div>
 
-<p class="footer">— CooperTin</p>
-
 <script>
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const COUNT = 90, LINK_DIST = 130, MOUSE = { x: -9999, y: -9999 };
+  (function () {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const COUNT = 80;
+    const LINK = 120;
+    let W, H, pts = [];
+    const mouse = { x: -9999, y: -9999 };
 
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  function randBetween(a, b) { return a + Math.random() * (b - a); }
-
-  function initParticles() {
-    particles = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: randBetween(-0.3, 0.3),
-      vy: randBetween(-0.3, 0.3),
-      r: randBetween(1, 2.2),
-      alpha: randBetween(0.4, 0.9)
-    }));
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-
-    // 粒子连线
-    for (let i = 0; i < COUNT; i++) {
-      for (let j = i + 1; j < COUNT; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < LINK_DIST) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(148,130,255,${0.18 * (1 - dist / LINK_DIST)})`;
-          ctx.lineWidth = 0.6;
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.stroke();
-        }
-      }
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
 
-    // 粒子本体
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(200,195,255,${p.alpha})`;
-      ctx.fill();
-    });
+    function init() {
+      pts = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 1.4 + 0.8,
+        a: Math.random() * 0.5 + 0.4
+      }));
+    }
 
-    // 鼠标连线
-    particles.forEach(p => {
-      const dx = p.x - MOUSE.x;
-      const dy = p.y - MOUSE.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 160) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(180,160,255,${0.35 * (1 - dist / 160)})`;
-        ctx.lineWidth = 0.8;
-        ctx。moveTo(p.x, p.y);
-        ctx.lineTo(MOUSE.x, MOUSE.y);
-        ctx.stroke();
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      /* 粒子间连线 */
+      for (let i = 0; i < COUNT - 1; i++) {
+        for (let j = i + 1; j < COUNT; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < LINK) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(148,130,255,${0.16 * (1 - d / LINK)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
       }
+
+      /* 鼠标 / 触摸连线 */
+      pts.forEach(p => {
+        const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+        if (d < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(180,160,255,${0.3 * (1 - d / 150)})`;
+          ctx.lineWidth = 0.7;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      });
+
+      /* 粒子本体 */
+      pts.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(210,205,255,${p.a})`;
+        ctx.fill();
+      });
+    }
+
+    function update() {
+      pts.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      });
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    /* 事件：鼠标 */
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
-  }
-
-  function update() {
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
+    window.addEventListener('mouseleave', () => {
+      mouse.x = -9999; mouse.y = -9999;
     });
-  }
 
-  function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-  }
+    /* 事件：触摸（手机支持） */
+    window.addEventListener('touchmove', e => {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchend', () => {
+      mouse.x = -9999; mouse.y = -9999;
+    });
 
-  window.addEventListener('resize', () => { resize(); initParticles(); });
-  window.addEventListener('mousemove', e => { MOUSE.x = e.clientX; MOUSE.y = e.clientY; });
-  window.addEventListener('mouseleave', () => { MOUSE.x = -9999; MOUSE.y = -9999; });
+    /* 窗口大小变化 */
+    window.addEventListener('resize', () => { resize(); init(); });
 
-  resize();
-  initParticles();
-  loop();
+    resize();
+    init();
+    loop();
+  })();
 </script>
 
 </body>
 </html>
-
-
