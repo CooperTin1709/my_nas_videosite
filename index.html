@@ -89,7 +89,7 @@
       gap: 8px;
     }
 
-    .title-main {
+    。title-main {
       font-family: 'Raleway', 'Noto Serif SC', 'PingFang SC', sans-serif;
       font-size: clamp(30px, 7.5vw, 46px);
       font-weight: 700;
@@ -118,7 +118,7 @@
     }
 
     /* ── 按钮组 ── */
-    .btns {
+    。btns {
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -144,7 +144,7 @@
       transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
     }
 
-    .btn:active { transform: scale(0.97); }
+    。btn:active { transform: scale(0.97); }
 
     @media (hover: hover) {
       .btn:hover { transform: translateY(-3px); }
@@ -178,7 +178,7 @@
       }
     }
 
-    .btn-nas {
+    。btn-nas {
       background: linear-gradient(135deg,
         rgba(255, 255, 255, 0.09) 0%,
         rgba(255, 228, 170, 0.10) 100%
@@ -209,7 +209,7 @@
     /* ══════════════════════════════════════ */
     /*  MODAL (极简高级现代风)                */
     /* ══════════════════════════════════════ */
-    .modal-overlay {
+    。modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 200;
@@ -223,7 +223,7 @@
       animation: overlayIn 0.4s ease forwards;
     }
 
-    .modal-overlay.closing {
+    。modal-overlay。closing {
       animation: overlayOut 0.35s ease forwards;
       pointer-events: none;
     }
@@ -276,7 +276,7 @@
 
     .modal-close:hover { color: #111; }
 
-    .modal-content {
+    。modal-content {
       font-family: 'Noto Serif SC', serif;
       display: flex;
       flex-direction: column;
@@ -351,7 +351,7 @@
 <div class="page">
   <div class="card">
     <div class="title-group">
-      <h1 class="title-main">yTdd宇宙</h1>
+      <h1 class="title-main">yTdd_Base</h1>
     </div>
 
     <div class="divider"></div>
@@ -472,7 +472,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
         ctx.fillStyle = gr;
-        ctx.fill();
+        ctx。fill();
       }
 
       ctx.beginPath();
@@ -532,4 +532,5 @@ document.getElementById('modalOverlay').addEventListener('click', e => {
 </script>
 </body>
 </html>
+
 
