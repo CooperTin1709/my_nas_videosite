@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#030714" />
-  <title>yTdd宇宙</title>
+  <title>yTdd's Site</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet" />
@@ -28,6 +28,7 @@
       font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
     }
 
+    /* ── 星云背景 ── */
     .nebula {
       position: fixed;
       inset: 0;
@@ -46,6 +47,7 @@
       z-index: 1;
     }
 
+    /* ── 页面主层 ── */
     .page {
       position: relative;
       z-index: 2;
@@ -60,6 +62,7 @@
         max(32px, env(safe-area-inset-bottom, 32px));
     }
 
+    /* ── 主卡片 ── */
     .card {
       width: min(480px, 92vw);
       background: rgba(255, 255, 255, 0.048);
@@ -78,7 +81,8 @@
       text-align: center;
     }
 
-    .title-group {
+    /* ── 标题 ── */
+    。title-group {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -113,6 +117,7 @@
       );
     }
 
+    /* ── 按钮组 ── */
     .btns {
       display: flex;
       flex-direction: column;
@@ -194,24 +199,27 @@
       }
     }
 
+    /* ── 页脚 ── */
     .footer-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.18);
       letter-spacing: 0.16em;
     }
 
-    /* ══ MODAL ══ */
+    /* ══════════════════════════════════════ */
+    /*  MODAL (极简高级现代风)                */
+    /* ══════════════════════════════════════ */
     .modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 200;
-      background: rgba(3, 7, 22, 0.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.5); /* 半透明暗色遮罩，让浅色卡片更突出 */
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: max(20px, env(safe-area-inset-top, 20px)) 20px max(20px, env(safe-area-inset-bottom, 20px));
+      padding: max(20px, env(safe-area-inset-top, 20px)) 20px;
       animation: overlayIn 0.4s ease forwards;
     }
 
@@ -225,116 +233,97 @@
 
     .modal {
       position: relative;
-      width: min(400px, 92vw);
-      background:
-        radial-gradient(ellipse at 30% 20%, rgba(100, 30, 180, 0.25) 0%, transparent 60%),
-        rgba(12, 6, 36, 0.88);
-      border: 1px solid rgba(200, 150, 255, 0.22);
-      border-radius: 26px;
-      padding: clamp(32px, 7vw, 48px) clamp(24px, 6vw, 40px) clamp(28px, 6vw, 40px);
+      width: min(340px, 88vw);
+      background: rgba(255, 255, 255, 0.92); /* 浅色高级磨砂质感 */
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 1);
+      border-radius: 24px;
+      padding: 50px 32px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
-      box-shadow:
-        0 0 70px rgba(140, 60, 255, 0.18),
-        0 24px 80px rgba(0, 0, 0, 0.65);
+      gap: 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
       text-align: center;
-      animation: modalIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      color: #1a1a1a;
+      animation: modalIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
     @keyframes modalIn {
-      from { transform: translateY(28px) scale(0.93); opacity: 0; }
+      from { transform: translateY(20px) scale(0.95); opacity: 0; }
       to   { transform: translateY(0)    scale(1);    opacity: 1; }
     }
 
     .modal-close {
       position: absolute;
-      top: 13px;
-      right: 13px;
-      width: 30px;
-      height: 30px;
+      top: 14px;
+      right: 14px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      color: rgba(255, 255, 255, 0.50);
-      font-size: 14px;
+      background: transparent;
+      border: none;
+      color: #999;
+      font-size: 16px;
+      font-weight: 300;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s, color 0.2s;
+      transition: color 0.2s;
     }
 
-    .modal-close:hover {
-      background: rgba(255, 255, 255, 0.14);
-      color: #fff;
+    .modal-close:hover { color: #111; }
+
+    .modal-content {
+      font-family: 'Noto Serif SC', serif;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .modal-deco {
-      font-size: clamp(38px, 9vw, 52px);
-      animation: floatDeco 3s ease-in-out infinite;
-      line-height: 1;
+    .m-greeting {
+      font-size: 14px;
+      color: #666;
+      letter-spacing: 0.1em;
     }
 
-    @keyframes floatDeco {
-      0%, 100% { transform: translateY(0);    }
-      50%       { transform: translateY(-6px); }
+    。m-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #111;
+      letter-spacing: 0.08em;
     }
 
-    .modal-title {
-      font-family: 'Raleway', 'Noto Serif SC', serif;
-      font-size: clamp(15px, 3.8vw, 19px);
+    .m-signature {
+      font-size: 13px;
+      color: #888;
+      margin-top: 8px;
       letter-spacing: 0.05em;
-      line-height: 1.45;
-      background: linear-gradient(135deg, #fff 0%, #f0d5ff 50%, #ffd9b0 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
-
-    .modal-body {
-      font-size: clamp(13px, 3.2vw, 14.5px);
-      color: rgba(255, 255, 255, 0.62);
-      line-height: 1.90;
-      max-width: 300px;
-    }
-
-    .modal-body .pink  { color: rgba(255, 190, 210, 0.90); }
-    .modal-body .gold  { color: rgba(255, 220, 150, 0.85); }
 
     .modal-action {
-      margin-top: 8px;
-      padding: 12px 40px;
-      border-radius: 50px;
-      background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.95),
-        rgba(255, 205, 225, 0.92)
-      );
-      color: #5c1030;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.07em;
+      padding: 12px 42px;
+      border-radius: 30px;
+      background: #111;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
       border: none;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 18px rgba(255, 150, 175, 0.30);
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     }
 
     .modal-action:hover {
+      background: #333;
       transform: translateY(-2px);
-      box-shadow: 0 8px 26px rgba(255, 150, 175, 0.48);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .modal-action:active { transform: scale(0.97); }
-
-    .stars-row {
-      display: flex;
-      gap: 10px;
-      font-size: 12px;
-      opacity: 0.5;
-      letter-spacing: 4px;
-    }
+    .modal-action:active { transform: scale(0.98); }
   </style>
 </head>
 <body>
@@ -347,23 +336,13 @@
   <div class="modal">
     <button class="modal-close" id="closeBtn" aria-label="关闭">✕</button>
 
-    <div class="modal-deco">💌</div>
-
-    <div class="stars-row">✦ ✦ ✦</div>
-
-    <div class="modal-title">来自宇宙的一封信</div>
-
-    <div class="modal-body">
-      <span class="pink">亲爱的 L，</span><br><br>
-      <!-- ✏️ 在这里替换成你的生日祝福内容 -->
-      这里是属于我们的小宇宙 🌌<br>
-      <span class="gold">生日快乐 🎂</span><br><br>
-      <span class="pink">—— 你的 Cooper ♡</span>
+    <div class="modal-content">
+      <div class="m-greeting">欢迎，xxx</div> <!-- ✏️ 这里把 xxx 换成她的名字 -->
+      <div class="m-title">19岁生日快乐</div>
+      <div class="m-signature">——Cooper</div>
     </div>
 
-    <div class="stars-row">✦ ✦ ✦</div>
-
-    <button class="modal-action" id="modalOkBtn">进入宇宙 ✨</button>
+    <button class="modal-action" id="modalOkBtn">进入</button>
   </div>
 </div>
 
